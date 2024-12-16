@@ -1,66 +1,109 @@
-# Project Overview
+# Rental Recommendation Web Service
 
-This project consists of several core services, each responsible for different functionalities. Below are the details for each service:
+## Introduction
+Finding a rental property that aligns with specific preferences can be a time-consuming task for users, given the vast number of listings available online. While existing platforms like Zillow and Realtor.com offer basic filters, they often fall short when it comes to addressing nuanced user needs such as proximity to specific locations, quiet neighborhoods, or low-crime areas. This gap inspired us to create a more effective solution: a rental recommendation web service powered by a robust clustering model.
 
----
+Our application allows users to search for rental listings in a desired area and view personalized recommendations for similar properties when exploring a specific listing.
 
-## Auth Service
-
-### Introduction
-The **Auth Service** is a core component of the project, responsible for managing user authentication and authorization. It provides secure login, registration, and token management functionalities.
-
-### How It Works
-- **User Registration**: Allows new users to register by providing necessary details.
-- **User Login**: Authenticates users based on their credentials and issues tokens.
-- **Token Management**: Manages access and refresh tokens to ensure secure access to protected resources.
+The recommendation system uses a clustering algorithm trained on scraped property data, identifying patterns and grouping similar properties based on features like location, price, size, and amenities. By focusing on the relationships between these attributes, our application simplifies the property search process, delivering results that are more relevant and tailored to user preferences.
 
 
-## Monitoring Service
-### Introduction
-The Monitoring Service is a core component of the project, responsible for monitoring the health and performance of various services. It provides functionalities for collecting, storing, and analyzing metrics and logs to ensure the system operates efficiently and reliably.  
-###  How It Works
-Metrics Collection: Collects metrics from various services to monitor their performance and health.
-Log Aggregation: Aggregates logs from different services for centralized analysis.
-Alerting: Provides mechanisms to set up alerts based on predefined thresholds and conditions.
+The project is built on four key components:
+1. **Frontend**
+2. **Backend**
+3. **Web Scraper Pipeline**
+4. **Recommendation Model Training Pipeline**
 
-## Rental Recommender Service
-### Introduction
-The Rental Recommender Service is a core component of the project, responsible for providing rental property recommendations based on user preferences and historical data. It leverages machine learning algorithms to analyze user inputs and generate personalized recommendations.  
-### How It Works
-Data Collection: Gathers data from various sources, including user inputs and historical rental data.
-Data Processing: Cleans and preprocesses the collected data to ensure it is suitable for analysis.
-Recommendation Engine: Uses machine learning algorithms to analyze the processed data and generate rental property recommendations.
-User Feedback Loop: Incorporates user feedback to continuously improve the recommendation accuracy.
+### Frontend
+- **Technologies**: React, Redux
+- **Description**: Ensures a responsive and modular user interface.
 
-## Tracing Service
-### Introduction
-The Tracing Service is a core component of the project, responsible for tracking and monitoring the flow of requests through various services. It provides functionalities for tracing requests, collecting performance data, and identifying bottlenecks.  
-### How It Works
-Request Tracing: Tracks the flow of requests through different services to provide a comprehensive view of the system's operation.
-Performance Data Collection: Collects data on the performance of various services, including response times and error rates.
-Bottleneck Identification: Analyzes the collected data to identify performance bottlenecks and potential issues.
+### Backend
+- **Technologies**: Python, FastAPI
+- **Description**: Handles REST APIs, integrates with MongoDB for managing housing data, and utilizes Redis for caching frequently accessed information.
 
+### Web Scraper Pipeline
+- **Technologies**: Kafka, Apache Flink
+- **Description**: Collects and processes rental listings from platforms like Zillow and Realtor.com using a nightly cron job. This ensures the database remains comprehensive and up-to-date.
 
+### Recommendation Model Training Pipeline
+- **Technologies**: Google Colab, AWS S3
+- **Description**: The recommendation model is trained offline and deployed to AWS S3, enabling periodic updates to maintain its relevance and accuracy.
 
+## Clustering Techniques
+By combining efficient clustering techniques, such as k-means and HDBSCAN, with dimensionality reduction methods like UMAP, our system identifies meaningful patterns in the data and creates clusters of similar properties. This approach not only ensures a streamlined and user-friendly property search experience but also addresses critical gaps in existing rental platforms.
 
-# Setup
-#### Prerequisites
-- Python 3.8 or higher
-- Docker (for containerization)
-- Jenkins (for CI/CD)
+## Getting Started
 
-#### Installation
-1. **Clone the repository**:  
-   ```bash
-   git clone https://github.com/yourusername/auth-service.git
-   cd <service-name>
+### Prerequisites
+- Node.js and npm
+- Python 3.8+
+- MongoDB
+- Redis
+- Kafka
+- Apache Flink
+- Google Colab account
+- AWS account
+
+### Installation
+
+#### Frontend
+1. Navigate to the `web-app` directory:
+    ```sh
+    cd web-app
+    ```
+2. Install dependencies:
+    ```sh
+    npm install
+    ```
+3. Start the development server:
+    ```sh
+    npm start
     ```
 
-Install dependencies:  
-````
-pip install -r requirements.txt
-````
-Run the application:  
-````
-uvicorn app:app --host 0.0.0.0 --port 8000
-````
+#### Backend
+1. Navigate to the `listing-service` directory:
+    ```sh
+    cd listing-service
+    ```
+2. Create a virtual environment and activate it:
+    ```sh
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    ```
+3. Install dependencies:
+    ```sh
+    pip install -r requirements.txt
+    ```
+4. Start the FastAPI server:
+    ```sh
+    uvicorn main:app --reload
+    ```
+
+#### Web Scraper Pipeline
+1. Set up Kafka and Apache Flink as per their official documentation.
+2. Configure the nightly cron job to run the web scraper.
+
+#### Recommendation Model Training Pipeline
+1. Train the model in Google Colab.
+2. Deploy the trained model to AWS S3.
+
+## Usage
+1. Open the frontend application in your browser.
+2. Search for rental listings in a desired area.
+3. Explore a specific listing to view personalized recommendations for similar properties.
+
+## Contributing
+We welcome contributions to improve our rental recommendation web service. Please follow these steps:
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/your-feature`).
+3. Commit your changes (`git commit -am 'Add some feature'`).
+4. Push to the branch (`git push origin feature/your-feature`).
+5. Create a new Pull Request.
+
+## License
+This project is licensed under the MIT License.
+
+## Acknowledgements
+- Realtor.com for providing property data.
+- The developers and maintainers of React, Redux, FastAPI, Kafka, Apache Flink, Google Colab, and AWS.
